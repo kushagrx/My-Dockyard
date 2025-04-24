@@ -42,11 +42,11 @@ docker network create --driver bridge --subnet 192.168.1.0/24 --ip-range 192.168
 ---
 
 ## 🚀 2. Running Containers in the Custom Network
-### Running **Redis Container** (`tarak-database`)
+### Running **Redis Container** (`kushagra-database`)
 ```bash
 docker run -itd --net=kushagra-bridge --name=kushagra-database redis
 ```
-### Running **BusyBox Container** (`tarak-server-A`)
+### Running **BusyBox Container** (`kushagra-server-A`)
 ```bash
 docker run -itd --net=kushagra-bridge --name=kushagra-server-A busybox
 ```
@@ -65,11 +65,11 @@ kushagra-server-A: 192.168.1.101
 ---
 
 ## 🔄 3. Testing Communication Between Containers
-### Ping from **tarak-database** to **tarak-server-A**
+### Ping from **kushagra-database** to **kushagra-server-A**
 ```bash
 docker exec -it kushagra-database ping 192.168.1.101
 ```
-### Ping from **tarak-server-A** to **tarak-database**
+### Ping from **kushagra-server-A** to **kushagra-database**
 ```bash
 docker exec -it kushagra-server-A ping 192.168.1.100
 ```
@@ -80,7 +80,7 @@ docker exec -it kushagra-server-A ping 192.168.1.100
 ## 🚧 4. Demonstrating Network Isolation with a Third Container
 We add another container (`kushagra-server-B`) on the **default bridge network**.
 ```bash
-docker run -itd --name=tarak-server-B busybox
+docker run -itd --name=kushagra-server-B busybox
 ```
 ### 📌 Get IP of `Kushagra-server-B`
 ```bash
@@ -91,7 +91,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' kus
 ---
 
 ## ❌ 5. Testing Communication Between Different Networks
-Ping from `tarak-database` to `tarak-server-B`:
+Ping from `kushagra-database` to `kushagra-server-B`:
 ```bash
 docker exec -it kushagra-database ping 172.17.0.2
 ```
