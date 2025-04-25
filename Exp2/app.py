@@ -33,7 +33,9 @@ def main():
     @st.cache_data(persist=True)
     def load_data():
         """Load and preprocess the mushroom dataset."""
-        data = pd.read_csv('mushrooms.csv')
+        import os
+        csv_path = os.path.join(os.path.dirname(__file__), 'mushrooms.csv')
+        data = pd.read_csv(csv_path)
         label = LabelEncoder()
         for col in data.columns:
             data[col] = label.fit_transform(data[col])
