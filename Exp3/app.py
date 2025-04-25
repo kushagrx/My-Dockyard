@@ -1,7 +1,10 @@
 import time
 import os
 
-LOG_FILE = "/data/app.log"
+LOG_DIR = "data"
+LOG_FILE = os.path.join(LOG_DIR, "app.log")
+os.makedirs(LOG_DIR, exist_ok=True)
+
 MAX_LOG_SIZE = 1 * 1024 * 1024  # 1MB
 
 def rotate_logs():
