@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Set working directory
 WORKDIR /app
 COPY . /app
+COPY mushrooms.csv mushrooms.csv
 
 # Ensure Streamlit runs as non-root user
 RUN adduser --disabled-password --gecos "" appuser && chown -R appuser /app
