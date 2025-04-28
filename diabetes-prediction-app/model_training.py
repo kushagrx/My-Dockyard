@@ -7,9 +7,16 @@ def show():
     from sklearn.tree import DecisionTreeClassifier
     from sklearn.svm import SVC
     from sklearn.metrics import classification_report, accuracy_score
+    import os
+
+# Get the correct path relative to the script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(current_dir, 'pima_indians_diabetes.csv')
+
+# Now read the CSV
+    df = pd.read_csv(csv_path)
 
     st.title("Model Training & Evaluation")
-    df = pd.read_csv("pima_indians_diabetes.csv")
     X = df.drop("Outcome", axis=1)
     y = df["Outcome"]
 
