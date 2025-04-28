@@ -4,6 +4,16 @@ import explore_data
 import model_training
 import prediction
 
+import os
+import pandas as pd
+
+# Get the correct path relative to the script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(current_dir, 'pima_indians_diabetes.csv')
+
+# Now read the CSV
+df = pd.read_csv(csv_path)
+
 # Set Streamlit page configuration
 st.set_page_config(
     page_title="Diabetes Prediction System",
