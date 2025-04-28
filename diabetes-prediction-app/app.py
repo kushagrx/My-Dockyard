@@ -1,5 +1,8 @@
 import streamlit as st
-from pages import overview, explore_data, model_training, prediction
+import overview
+import explore_data
+import model_training
+import prediction
 
 # Set Streamlit page configuration
 st.set_page_config(
