@@ -27,37 +27,58 @@ elif selected == "Stock Overview":
     st.title("Stock Overview")
     stock_symbol = st.text_input("Enter Stock Symbol (e.g., AAPL, TSLA):", "AAPL")
     if stock_symbol:
-        stock = yf.Ticker(stock_symbol)
-        hist = stock.history(period="1y")
-        st.write(f"## {stock_symbol} Stock Data")
-        st.line_chart(hist['Close'])
-        st.write(hist.tail())
+        try:
+            hist = yf.download(stock_symbol, period="1y")
+            if not hist.empty:
+                st.write(f"## {stock_symbol} Stock Data")
+                st.line_chart(hist['Close'])
+                st.write(hist.tail())
+            else:
+                st.warning("No data found for the given symbol.")
+        except Exception as e:
+            st.error("Failed to fetch stock data. Please try again later.")
+            st.write(e)
 
 # Technical Analysis Page
 elif selected == "Technical Analysis":
     st.title("Technical Analysis")
     stock_symbol = st.text_input("Enter Stock Symbol (e.g., AAPL, TSLA):", "AAPL")
     if stock_symbol:
-        stock = yf.Ticker(stock_symbol)
-        hist = stock.history(period="6mo")
-        st.write(f"## {stock_symbol} Moving Averages")
-        hist['MA50'] = hist['Close'].rolling(window=50).mean()
-        hist['MA200'] = hist['Close'].rolling(window=200).mean()
-        st.line_chart(hist[['Close', 'MA50', 'MA200']])
+        try:
+            hist = yf.download(stock_symbol, period="6mo")
+            if not hist.empty:
+                hist['MA50'] = hist['Close'].rolling(window=50).mean()
+                hist['MA200'] = hist['Close'].rolling(window=200).mean()
+                st.write(f"## {stock_symbol} Moving Averages")
+                st.line_chart(hist[['Close', 'MA50', 'MA200']])
+            else:
+                st.warning("No data found for the given symbol.")
+        except Exception as e:
+            st.error("Failed to fetch technical data. Please try again later.")
+            st.write(e)
 
 # News & Sentiment Page
 elif selected == "News & Sentiment":
     st.title("News & Sentiment Analysis")
     stock_symbol = st.text_input("Enter Stock Symbol (e.g., AAPL, TSLA):", "AAPL")
     if stock_symbol:
-        news_api = f'https://newsapi.org/v2/everything?q={stock_symbol}&apiKey=YOUR_NEWS_API_KEY'
-        response = requests.get(news_api)
-        if response.status_code == 200:
-            articles = response.json().get('articles', [])[:5]
-            for article in articles:
-                st.write(f"### {article['title']}")
-                st.write(article['description'])
-                st.write(f"[Read more]({article['url']})")
-                st.write("---")
-        else:
-            st.error("Error fetching news")
+        # Replace with your News API key
+        api_key = "YOUR_NEWS_API_KEY"
+        news_api = f'https://newsapi.org/v2/everything?q={stock_symbol}&apiKey={api_key}'
+        try:
+            response = requests.get(news_api)
+            if response.status_code == 200:
+                articles = response.json().get('articles', [])[:5]
+                if articles:
+                    for article in articles:
+                        st.write(f"### {article['title']}")
+                        st.write(article['description'])
+                        st.write(f"[Read more]({article['url']})")
+                        st.write("---")
+                else:
+                    st.info("No recent news found for this stock.")
+            else:
+                st.error("News API error. Please check your API key and usage.")
+        except Exception as e:
+            st.error("Error fetching news.")
+            st.write(e)
